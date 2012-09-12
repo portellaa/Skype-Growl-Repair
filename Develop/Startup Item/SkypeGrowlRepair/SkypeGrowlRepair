@@ -1,0 +1,52 @@
+#!/bin/sh
+
+. /etc/rc.common
+
+MYUSER="meligaletiko"
+SKYPERUN=0
+
+StartService()
+{
+	ConsoleMessage "[SkypeGrowlRepair]:[StartService] Executing SkypeGrowlRepair..."
+	ConsoleMessage "[SkypeGrowlRepair]:[StartService] User Active: $MYUSER"
+	ConsoleMessage "[SkypeGrowlRepair]:[StartService] Skype Using Growl? $(defaults read com.skype.skype SKUseGrowlInsteadOfDefault)"
+	
+#	if [ "$(su - $MYUSER -c "ps -arcwwwxo "command" | grep -v COMMAND | grep Skype")" == "Skype" ]; then
+#		ConsoleMessage "[SkypeGrowlRepair]:[StartService] Skype running..."
+#		SKYPERUN=1
+#		ConsoleMessage "[SkypeGrowlRepair]:[StartService] Killing Skype..."
+#		killall -KILL Skype
+#		ConsoleMessage "[SkypeGrowlRepair]:[StartService] Skype Killed..."
+#	fi
+
+	su - $MYUSER -c "open -a Growl"
+
+	su - $MYUSER -c "defaults write com.skype.skype SKUseGrowlInsteadOfDefault 1"
+	ConsoleMessage "[SkypeGrowlRepair]:[StartService] Result of SkypeGrowlRepair: $(defaults read com.skype.skype SKUseGrowlInsteadOfDefault)"
+
+#	if [ $SKYPERUN -eq 1 ]; then
+#		ConsoleMessage "Skype was runnig so executing now again..."
+#		su - $MYUSER -c "open -a Skype"
+#	fi
+
+	ConsoleMessage "[SkypeGrowlRepair]:[StartService] SkypeGrowlRepair Skype using Growl now..."
+}
+
+
+StopService()
+{
+#	ConsoleMessage "[SkypeGrowlRepair]:[StopService] StThere is nothing to do here..."
+#	ConsoleMessage "[SkypeGrowlRepair]:[StopService] Reparing Skype..."
+#	su - $MYUSER -c "defaults write com.skype.skype SKUseGrowlInsteadOfDefault 1"
+#	ConsoleMessage "[SkypeGrowlRepair]:[StopService] Skype repaired: $(defaults read com.skype.skype SKUseGrowlInsteadOfDefault). Exiting now..."
+}
+
+
+RestartService()
+{
+    StopService
+    StartService
+}
+
+
+RunService "$1"

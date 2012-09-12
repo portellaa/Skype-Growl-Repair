@@ -1,0 +1,9 @@
+{
+	Description = "Repairs default notification system of Skype";
+	Provides = (
+		SkypeGrowlRepair,
+	);
+	OrderPreference = First;
+	start = "Executing SkypeGrowlRepair...";
+	stop = "SkypeGrowlRepair nothing to be done";
+}
